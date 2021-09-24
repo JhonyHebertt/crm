@@ -84,8 +84,7 @@ function Home() {
           reverseButtons={true}
         >
           Deseja excluir o cliente selecionado?
-        </SweetAlert> : null
-      }
+        </SweetAlert> : null}
 
     </div>
   </div>

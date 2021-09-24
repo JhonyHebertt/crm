@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import './login.css';
+import { AuthContext } from '../Context/auth';
 
 import firebase from '../Config/firebase';
 import 'firebase/auth';
@@ -11,6 +12,21 @@ function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [sucesso, setSucesso] = useState('');
+  const { setLogado } = useContext(AuthContext);
+
+  function LoginUsuario() {
+    firebase.auth().signInWithEmailAndPassword(email, senha)
+      .then(function (firebaseUser) {
+        localStorage.setItem("logado", "S");
+        setLogado(true);
+        setSucesso('S');
+      })
+      .catch(function (error) {
+        localStorage.setItem("logado", "N");
+        setLogado(false);
+        setSucesso('N');
+      });
+  }
 
   function pegaEmail(event) {
     setEmail(event.target.value);
@@ -20,19 +36,9 @@ function Login() {
     setSenha(event.target.value);
   }
 
-  function LoginUsuario() {
-    firebase.auth().signInWithEmailAndPassword(email, senha)
-      .then(function (firebaseUser) {
-        setSucesso('S');
-      })
-      .catch(function (error) {
-        setSucesso('N');
-      });
-  }
-
   return <div className="d-flex align-items-center text-center form-container">
     <form className="form-signin">
-      <img className="mb-4" src="Images/logo-small2.png" alt="login" />
+      <img className="mb-4" src="../../Images/logo-small2.png" alt="login" />
       <h1 className="h3 mb-3 fw-normal">Login</h1>
 
       <div className="form-floating">
